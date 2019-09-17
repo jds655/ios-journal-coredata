@@ -22,21 +22,17 @@ protocol EntryDataDelegate {
 
 class EntryController {
     
-    var entries: [Entry] {
-        let fetchRequest: NSFetchRequest<Entry> = Entry.fetchRequest()
-        
-        do {
-            let entries = try CoreDataStack.shared.mainContext.fetch(fetchRequest)
-//            entries = entries.sorted { (e1, e2) -> Bool in
-//                guard let t1 = e1.timeStamp, let t2 = e2.timeStamp else {return true}
-//                return t1 > t2
-//            }
-            return entries
-        } catch {
-            NSLog("Error fetching tasks: \(error)")
-            return []
-        }
-    }
+//    var entries: [Entry] {
+//        let fetchRequest: NSFetchRequest<Entry> = Entry.fetchRequest()
+//
+//        do {
+//            let entries = try CoreDataStack.shared.mainContext.fetch(fetchRequest)
+//            return entries
+//        } catch {
+//            NSLog("Error fetching tasks: \(error)")
+//            return []
+//        }
+//    }
     
     @discardableResult func createEntry(with title: String, mood: String, body: String?) -> Entry {
         let entry = Entry(title: title, mood: mood, bodyText: body, context: CoreDataStack.shared.mainContext)

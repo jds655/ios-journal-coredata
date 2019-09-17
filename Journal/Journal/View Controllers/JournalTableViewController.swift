@@ -7,16 +7,25 @@
 //
 
 import UIKit
+import CoreData
 
 @IBDesignable
 class JournalTableViewController: UITableViewController {
 
     let entryController = EntryController()
     
+    lazy var fetchResultsController: NSFetchedResultsController<Entry> = {
+        let fetchRequest: NSFetchRequest<Entry> = Entry.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mood", ascending: true)]
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.mainContext, sectionNameKeyPath: "mood", cacheName: nil)
+        frc.delegate = self
+        do { try frc.performFetch() } catch { fatalError("NSFetchedResultsController failed: \(error)") }
+        return frc
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
         tableView.backgroundColor = .black
         tableView.tintColor = .white
         tableView.backgroundView?.backgroundColor = .black
@@ -24,15 +33,26 @@ class JournalTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return fetchResultsController.sections?.count ?? 1
+    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return entryController.entries.count
+        return fetchResultsController.sections?[section].numberOfObjects ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let sectionInfo = fetchResultsController.sections?[section] else { return nil }
+        return sectionInfo.name.capitalized
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "EntryCell", for: indexPath) as? EntryTableViewCell else { return UITableViewCell()}
-        cell.entry = entryController.entries[indexPath.row]
+        let entry = fetchResultsController.object(at: indexPath)
+        cell.entry = entry
+        
         cell.heightAnchor.constraint(equalToConstant: 100).isActive = true
         cell.body.layer.cornerRadius = 5
         cell.body.clipsToBounds = true
@@ -51,8 +71,7 @@ class JournalTableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            entryController.delete(entry: entryController.entries[indexPath.row])
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            entryController.delete(entry: fetchResultsController.object(at: indexPath))
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -82,8 +101,8 @@ class JournalTableViewController: UITableViewController {
         vc.delegate = self
         switch segue.identifier {
         case "DetailSegue":
-            if let index = tableView.indexPathForSelectedRow?.row {
-                vc.entry = entryController.entries[index]
+            if let indexPath = tableView.indexPathForSelectedRow {
+                vc.entry = fetchResultsController.object(at: indexPath)
             }
         case "AddSegue":
             break
@@ -93,6 +112,59 @@ class JournalTableViewController: UITableViewController {
     }
 }
 
+//MARK: - NSFetchedResultsControllerDelegate
+
+extension JournalTableViewController: NSFetchedResultsControllerDelegate {
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange sectionInfo: NSFetchedResultsSectionInfo,
+                    atSectionIndex sectionIndex: Int,
+                    for type: NSFetchedResultsChangeType) {
+        switch type {
+        case .insert:
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .automatic)
+        case .delete:
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .automatic)
+        default:
+            break
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let newIndexPath = newIndexPath else { return }
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        case .update:
+            guard let indexPath = indexPath else { return }
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        case .move:
+            guard let oldIndexPath = indexPath,
+                let newIndexPath = newIndexPath else { return }
+            tableView.deleteRows(at: [oldIndexPath], with: .automatic)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        case .delete:
+            guard let indexPath = indexPath else { return }
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        @unknown default:
+            fatalError("Unknown Change Type occured")
+        }
+    }
+}
+
+//MARK: - EntryDataDelegate
 extension JournalTableViewController:EntryDataDelegate {
     func updateEntry(entry: Entry, with title: String, mood: String, body: String?) {
         entryController.updateEntry(entry: entry, with: title, mood: mood, body: body)

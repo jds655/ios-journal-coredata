@@ -24,15 +24,15 @@ class EntryTableViewCell: UITableViewCell {
     private func updateViews(){
         guard let entry = entry else { return }
         title.text = entry.title
-        print ("\(entry.title ?? "")")
+        //print ("\(entry.title ?? "")")
         body.text = entry.bodyText
-        print ("\(entry.bodyText ?? "")")
+        //print ("\(entry.bodyText ?? "")")
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .medium
         if let date = entry.timeStamp {
             let dateString = formatter.string(from: date)
-            print (dateString)
+            //print (dateString)
             timeStamp.text = dateString
         } else {
             timeStamp.text = "Unk"
