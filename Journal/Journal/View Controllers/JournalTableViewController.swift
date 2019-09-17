@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class JournalTableViewController: UITableViewController {
 
     let entryController = EntryController()
@@ -16,6 +17,10 @@ class JournalTableViewController: UITableViewController {
         super.viewDidLoad()
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        tableView.backgroundColor = .black
+        tableView.tintColor = .white
+        tableView.backgroundView?.backgroundColor = .black
+        tableView.separatorColor = .white
     }
 
     // MARK: - Table view data source
@@ -28,6 +33,9 @@ class JournalTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "EntryCell", for: indexPath) as? EntryTableViewCell else { return UITableViewCell()}
         cell.entry = entryController.entries[indexPath.row]
+        cell.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        cell.body.layer.cornerRadius = 5
+        cell.body.clipsToBounds = true
         return cell
     }
 

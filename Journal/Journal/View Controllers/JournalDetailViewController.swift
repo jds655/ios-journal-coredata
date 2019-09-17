@@ -35,12 +35,16 @@ class JournalDetailViewController: UIViewController {
         } else {
             delegate?.createEntry(with: title, body: bodyTV.text)
         }
-        self.dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     private func updateViews() {
+        view.backgroundColor = UIColor.black
+        bodyTV.layer.cornerRadius = 5
+        bodyTV.clipsToBounds = true
         if let entry = entry {
-            title = "Editing \(String(describing: entry.title))"
+            let entryTitle = entry.title ?? ""
+            title = "Editing \(entryTitle)"
             titleTF.text = entry.title
             bodyTV.text = entry.bodyText
         } else {
