@@ -94,13 +94,13 @@ class JournalTableViewController: UITableViewController {
 }
 
 extension JournalTableViewController:EntryDataDelegate {
-    func updateEntry(entry: Entry, with title: String, body: String?) {
-        entryController.updateEntry(entry: entry, with: title, body: body)
+    func updateEntry(entry: Entry, with title: String, mood: String, body: String?) {
+        entryController.updateEntry(entry: entry, with: title, mood: mood, body: body)
         tableView.reloadData()
     }
     
-    func createEntry(with title: String, body: String?) {
-        entryController.createEntry(with: title, body: body)
+    func createEntry(with title: String, mood: String, body: String?) {
+        entryController.createEntry(with: title, mood: mood, body: body)
         tableView.reloadData()
     }
 }

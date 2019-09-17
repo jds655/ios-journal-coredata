@@ -115,27 +115,38 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rkd-3A-AfB">
-                                <rect key="frame" x="8" y="96" width="398" height="30"/>
+                                <rect key="frame" x="8" y="132" width="398" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="2bP-sb-8es">
-                                <rect key="frame" x="8" y="134" width="398" height="708"/>
+                                <rect key="frame" x="8" y="170" width="398" height="672"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="XVR-Jo-bIL">
+                                <rect key="frame" x="8" y="96" width="398" height="29"/>
+                                <segments>
+                                    <segment title="☹️"/>
+                                    <segment title="😐"/>
+                                    <segment title="🙂"/>
+                                </segments>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="2bP-sb-8es" firstAttribute="top" secondItem="Rkd-3A-AfB" secondAttribute="bottom" constant="8" id="8ZI-KJ-Iif"/>
                             <constraint firstItem="Rkd-3A-AfB" firstAttribute="leading" secondItem="guR-nB-nBQ" secondAttribute="leading" constant="8" id="E58-cm-Bvn"/>
                             <constraint firstItem="guR-nB-nBQ" firstAttribute="trailing" secondItem="2bP-sb-8es" secondAttribute="trailing" constant="8" id="NDp-a4-VzU"/>
+                            <constraint firstItem="XVR-Jo-bIL" firstAttribute="top" secondItem="guR-nB-nBQ" secondAttribute="top" constant="8" id="Tts-xn-pHO"/>
                             <constraint firstItem="guR-nB-nBQ" firstAttribute="trailing" secondItem="Rkd-3A-AfB" secondAttribute="trailing" constant="8" id="ZDb-8V-ghz"/>
+                            <constraint firstItem="guR-nB-nBQ" firstAttribute="trailing" secondItem="XVR-Jo-bIL" secondAttribute="trailing" constant="8" id="bN9-rg-asf"/>
                             <constraint firstItem="guR-nB-nBQ" firstAttribute="bottom" secondItem="2bP-sb-8es" secondAttribute="bottom" constant="20" id="fdU-T8-YWz"/>
-                            <constraint firstItem="Rkd-3A-AfB" firstAttribute="top" secondItem="guR-nB-nBQ" secondAttribute="top" constant="8" id="qeb-bm-5g9"/>
+                            <constraint firstItem="Rkd-3A-AfB" firstAttribute="top" secondItem="XVR-Jo-bIL" secondAttribute="bottom" constant="8" id="qeb-bm-5g9"/>
                             <constraint firstItem="2bP-sb-8es" firstAttribute="leading" secondItem="guR-nB-nBQ" secondAttribute="leading" constant="8" id="rQZ-FH-4rN"/>
+                            <constraint firstItem="XVR-Jo-bIL" firstAttribute="leading" secondItem="guR-nB-nBQ" secondAttribute="leading" constant="8" id="ru5-xd-lEf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="guR-nB-nBQ"/>
                     </view>
@@ -148,6 +159,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="bodyTV" destination="2bP-sb-8es" id="hH9-xd-anx"/>
+                        <outlet property="segmented" destination="XVR-Jo-bIL" id="OB3-wR-qPL"/>
                         <outlet property="titleTF" destination="Rkd-3A-AfB" id="nu8-K2-g2t"/>
                     </connections>
                 </viewController>

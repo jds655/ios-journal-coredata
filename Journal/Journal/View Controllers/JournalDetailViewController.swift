@@ -15,6 +15,7 @@ class JournalDetailViewController: UIViewController {
     
     @IBOutlet weak var titleTF: UITextField!
     @IBOutlet weak var bodyTV: UITextView!
+    @IBOutlet weak var segmented: UISegmentedControl!
     
     
     override func viewDidLoad() {
@@ -30,10 +31,11 @@ class JournalDetailViewController: UIViewController {
             present(alert, animated: true)
             return
         }
+        let mood = segmented.titleForSegment(at: segmented.selectedSegmentIndex)
         if let entry = entry {
-            delegate?.updateEntry(entry: entry, with: title, body: bodyTV.text)
+            delegate?.updateEntry(entry: entry, with: title, mood: mood!, body: bodyTV.text)
         } else {
-            delegate?.createEntry(with: title, body: bodyTV.text)
+            delegate?.createEntry(with: title, mood: mood!, body: bodyTV.text)
         }
         navigationController?.popViewController(animated: true)
     }
@@ -47,6 +49,16 @@ class JournalDetailViewController: UIViewController {
         if let entry = entry {
             let entryTitle = entry.title ?? ""
             title = "Editing - \(entryTitle)"
+            switch entry.mood! {
+            case "☹️":
+                segmented.selectedSegmentIndex = 0
+            case "😐":
+                segmented.selectedSegmentIndex = 1
+            case "🙂":
+                segmented.selectedSegmentIndex = 2
+            default:
+                segmented.selectedSegmentIndex = 1
+            }
             titleTF.text = entry.title
             bodyTV.text = entry.bodyText
         } else {

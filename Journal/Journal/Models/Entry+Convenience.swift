@@ -11,7 +11,7 @@ import CoreData
 
 extension Entry {
     
-    convenience init(title: String, bodyText: String?, context: NSManagedObjectContext) {
+    convenience init(title: String,mood: String, bodyText: String?, context: NSManagedObjectContext) {
         
         // Setting up the generic NSManagedObject functionality of the model object
         // The generic chunk of clay
@@ -20,6 +20,7 @@ extension Entry {
         // Once we have the clay, we can begin sculpting it into our unique model object
         self.title = title
         self.bodyText = bodyText
+        self.mood = mood
         self.timeStamp = Date()
         self.identifier = UUID()
     }
