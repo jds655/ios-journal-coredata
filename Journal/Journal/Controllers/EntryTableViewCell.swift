@@ -29,7 +29,7 @@ class EntryTableViewCell: UITableViewCell {
         print ("\(entry.bodyText ?? "")")
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
-        //formatter.dateFormat = "
+        formatter.timeStyle = .medium
         if let date = entry.timeStamp {
             let dateString = formatter.string(from: date)
             print (dateString)

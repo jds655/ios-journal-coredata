@@ -20,7 +20,11 @@ class EntryController {
         let fetchRequest: NSFetchRequest<Entry> = Entry.fetchRequest()
         
         do {
-            let entries = try CoreDataStack.shared.mainContext.fetch(fetchRequest)
+            var entries = try CoreDataStack.shared.mainContext.fetch(fetchRequest)
+            entries = entries.sorted { (e1, e2) -> Bool in
+                guard let t1 = e1.timeStamp, let t2 = e2.timeStamp else {return true}
+                return t1 > t2
+            }
             return entries
         } catch {
             NSLog("Error fetching tasks: \(error)")
@@ -30,7 +34,6 @@ class EntryController {
     
     @discardableResult func createEntry(with title: String, body: String?) -> Entry {
         let entry = Entry(title: title, bodyText: body, context: CoreDataStack.shared.mainContext)
-        
         CoreDataStack.shared.saveToPersistentStore()
         return entry
     }
@@ -39,7 +42,6 @@ class EntryController {
         entry.title = title
         entry.bodyText = body
         entry.timeStamp = Date()
-        
         CoreDataStack.shared.saveToPersistentStore()
     }
     

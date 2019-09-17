@@ -40,11 +40,13 @@ class JournalDetailViewController: UIViewController {
     
     private func updateViews() {
         view.backgroundColor = UIColor.black
+        titleTF.layer.cornerRadius = 5
+        titleTF.clipsToBounds = true
         bodyTV.layer.cornerRadius = 5
         bodyTV.clipsToBounds = true
         if let entry = entry {
             let entryTitle = entry.title ?? ""
-            title = "Editing \(entryTitle)"
+            title = "Editing - \(entryTitle)"
             titleTF.text = entry.title
             bodyTV.text = entry.bodyText
         } else {

@@ -103,6 +103,4 @@ extension JournalTableViewController:EntryDataDelegate {
         entryController.createEntry(with: title, body: body)
         tableView.reloadData()
     }
-    
-    
 }
