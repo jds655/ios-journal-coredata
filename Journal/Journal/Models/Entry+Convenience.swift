@@ -11,7 +11,16 @@ import CoreData
 
 extension Entry {
     
-    convenience init(title: String,mood: String, bodyText: String?, context: NSManagedObjectContext) {
+    var entryRepresentation: EntryRepresentation? {
+        guard let title = title,
+            let mood = mood,
+            let identifier = identifier?.uuidString,
+            let timeStamp  = timeStamp
+            else { return nil}
+        return EntryRepresentation(identifier: identifier, title: title, bodyText: bodyText, mood: mood, timeStamp: timeStamp)
+    }
+    
+    convenience init(identifier: UUID = UUID(), title: String,mood: String, bodyText: String?, timeStamp: Date = Date(), context: NSManagedObjectContext) {
         
         // Setting up the generic NSManagedObject functionality of the model object
         // The generic chunk of clay
@@ -23,5 +32,12 @@ extension Entry {
         self.mood = mood
         self.timeStamp = Date()
         self.identifier = UUID()
+    }
+    
+    @discardableResult convenience init?(entryRepresentaion: EntryRepresentation, context: NSManagedObjectContext) {
+        guard let identifier = UUID(uuidString: entryRepresentaion.identifier)
+            else { return nil}
+        
+        self.init(identifier: identifier, title: entryRepresentaion.title,mood: entryRepresentaion.mood, bodyText: entryRepresentaion.bodyText, timeStamp: entryRepresentaion.timeStamp, context: context)
     }
 }

@@ -18,6 +18,8 @@
 		E05E40442330275300597B7F /* Entry+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05E40432330275300597B7F /* Entry+Convenience.swift */; };
 		E05E404623302AFA00597B7F /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05E404523302AFA00597B7F /* CoreDataStack.swift */; };
 		E05E404823302BF800597B7F /* EntryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05E404723302BF800597B7F /* EntryController.swift */; };
+		E0EE8C2F2332C5F500B1365E /* EntryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EE8C2E2332C5F500B1365E /* EntryRepresentation.swift */; };
+		E0EE8C312332C83000B1365E /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EE8C302332C83000B1365E /* Networking.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,8 @@
 		E05E404523302AFA00597B7F /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		E05E404723302BF800597B7F /* EntryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryController.swift; sourceTree = "<group>"; };
 		E05E40492330A2C700597B7F /* Journal 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Journal 2.xcdatamodel"; sourceTree = "<group>"; };
+		E0EE8C2E2332C5F500B1365E /* EntryRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryRepresentation.swift; sourceTree = "<group>"; };
+		E0EE8C302332C83000B1365E /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,7 @@
 		E05E403423301EEE00597B7F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E0EE8C302332C83000B1365E /* Networking.swift */,
 				E05E402223301DD100597B7F /* AppDelegate.swift */,
 				E05E402923301DD300597B7F /* Assets.xcassets */,
 				E05E402E23301DD300597B7F /* Info.plist */,
@@ -119,6 +124,7 @@
 				E05E404523302AFA00597B7F /* CoreDataStack.swift */,
 				E05E40432330275300597B7F /* Entry+Convenience.swift */,
 				E05E403A23301F8200597B7F /* Journal.xcdatamodeld */,
+				E0EE8C2E2332C5F500B1365E /* EntryRepresentation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -203,12 +209,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E05E402323301DD100597B7F /* AppDelegate.swift in Sources */,
+				E0EE8C312332C83000B1365E /* Networking.swift in Sources */,
 				E05E40422330228E00597B7F /* EntryTableViewCell.swift in Sources */,
 				E05E404623302AFA00597B7F /* CoreDataStack.swift in Sources */,
 				E05E403E2330216F00597B7F /* JournalTableViewController.swift in Sources */,
 				E05E403C23301F8200597B7F /* Journal.xcdatamodeld in Sources */,
 				E05E40442330275300597B7F /* Entry+Convenience.swift in Sources */,
 				E05E404823302BF800597B7F /* EntryController.swift in Sources */,
+				E0EE8C2F2332C5F500B1365E /* EntryRepresentation.swift in Sources */,
 				E05E40402330219B00597B7F /* JournalDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

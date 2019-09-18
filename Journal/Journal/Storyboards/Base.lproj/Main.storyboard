@@ -95,7 +95,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Journal" id="iWI-fg-jve">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="x51-SY-dPo">
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="x51-SY-dPo">
                             <connections>
                                 <segue destination="HQg-To-XSb" kind="show" identifier="AddSegue" id="edk-Wj-kMR"/>
                             </connections>
