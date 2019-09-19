@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Journal/Model Controllers/EntryController.swift"
+            timestampString = "590545986.365204"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "put(entry:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "default argument 1 of Journal.EntryController.put(entry: Journal.Entry, completion: () -&gt; ()) -&gt; ()"
+                  moduleName = "Journal"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joshuasharp/Dropbox/Lambda/iOS%20Projects/ios-journal-coredata/Journal/Journal/Model%20Controllers/EntryController.swift"
+                  timestampString = "590536616.600136"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in default argument 1 of Journal.EntryController.put(entry: Journal.Entry, completion: () -&gt; ()) -&gt; ()"
+                  moduleName = "Journal"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joshuasharp/Dropbox/Lambda/iOS%20Projects/ios-journal-coredata/Journal/Journal/Model%20Controllers/EntryController.swift"
+                  timestampString = "590536616.605446"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "65"
+                  endingLineNumber = "65"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Journal.EntryController.put(entry: Journal.Entry, completion: () -&gt; ()) -&gt; ()"
+                  moduleName = "Journal"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joshuasharp/Dropbox/Lambda/iOS%20Projects/ios-journal-coredata/Journal/Journal/Model%20Controllers/EntryController.swift"
+                  timestampString = "590536616.607941"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "629">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Journal/Model Controllers/EntryController.swift"
+            timestampString = "590545986.366002"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "fetchEntriesFromServer(completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "default argument 0 of Journal.EntryController.fetchEntriesFromServer(completion: () -&gt; ()) -&gt; ()"
+                  moduleName = "Journal"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joshuasharp/Dropbox/Lambda/iOS%20Projects/ios-journal-coredata/Journal/Journal/Model%20Controllers/EntryController.swift"
+                  timestampString = "590536622.229697"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in default argument 0 of Journal.EntryController.fetchEntriesFromServer(completion: () -&gt; ()) -&gt; ()"
+                  moduleName = "Journal"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joshuasharp/Dropbox/Lambda/iOS%20Projects/ios-journal-coredata/Journal/Journal/Model%20Controllers/EntryController.swift"
+                  timestampString = "590536622.23308"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "92"
+                  endingLineNumber = "92"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Journal.EntryController.fetchEntriesFromServer(completion: () -&gt; ()) -&gt; ()"
+                  moduleName = "Journal"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/joshuasharp/Dropbox/Lambda/iOS%20Projects/ios-journal-coredata/Journal/Journal/Model%20Controllers/EntryController.swift"
+                  timestampString = "590536622.236316"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93"
+                  offsetFromSymbolStart = "122">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Journal/Model Controllers/EntryController.swift"
+            timestampString = "590545986.366555"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
+            landmarkName = "updateEntries(with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Journal/Model Controllers/EntryController.swift"
+            timestampString = "590545986.3670681"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "updateEntry(entry:with:mood:body:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
