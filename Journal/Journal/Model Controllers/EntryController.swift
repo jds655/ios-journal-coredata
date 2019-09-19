@@ -41,7 +41,7 @@ class EntryController {
     
     @discardableResult func createEntry(with title: String, mood: String, body: String?) -> Entry {
         let entry = Entry(identifier: UUID(), title: title, mood: mood, bodyText: body, context: CoreDataStack.shared.mainContext)
-        CoreDataStack.shared.saveToPersistentStore()
+        CoreDataStack.shared.save()
         put(entry: entry)
         return entry
     }
@@ -51,13 +51,13 @@ class EntryController {
         entry.mood = mood
         entry.bodyText = body
         entry.timeStamp = Date()
-        CoreDataStack.shared.saveToPersistentStore()
+        CoreDataStack.shared.save()
         put(entry: entry)
     }
     
     func delete(entry: Entry) {
         CoreDataStack.shared.mainContext.delete(entry)
-        CoreDataStack.shared.saveToPersistentStore()
+        CoreDataStack.shared.save()
     }
     
     //MARK: - Firebase code
@@ -74,7 +74,10 @@ class EntryController {
                 completion(nil)
                 return
             }
-            request.httpBody = try JSONEncoder().encode(entryRepresentation)
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            request.httpBody = try encoder.encode(entryRepresentation)
+            print ("HTTP Body: \(String(describing: request.httpBody))")
         } catch {
             NSLog("Error encoding task respresentation: \(error)")
             completion(error)
@@ -107,6 +110,7 @@ class EntryController {
                 return
             }
             let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
             do {
                 let entryRepresentations =  try decoder.decode([String: EntryRepresentation].self, from: data).map({ $0.value })
                 self.updateEntries(with: entryRepresentations)
@@ -122,40 +126,41 @@ class EntryController {
         let identifiersToFetch = representations.compactMap({UUID(uuidString: $0.identifier)})
         let representationsByID = Dictionary(uniqueKeysWithValues: zip(identifiersToFetch, representations))
         var entriesToCreate = representationsByID
-        //Update Local store with Firebase
-        do {
-            let context = CoreDataStack.shared.mainContext
-            let fetchRequest: NSFetchRequest<Entry> = Entry.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "identifier IN %@", identifiersToFetch)
-            let existingEntries = try context.fetch(fetchRequest)
-            for entry in existingEntries {
-                guard let identifier = entry.identifier,
-                    let representation = representationsByID[identifier] else { continue }
-                entry.title = representation.title
-                entry.bodyText = representation.bodyText
-                entry.mood = representation.mood
-                entry.timeStamp = representation.timeStamp
-                entriesToCreate.removeValue(forKey: identifier)
+        let context = CoreDataStack.shared.container.newBackgroundContext()
+        let fetchRequest: NSFetchRequest<Entry> = Entry.fetchRequest()
+        context.performAndWait {
+            //Update Local store with Firebase
+            do {
+                fetchRequest.predicate = NSPredicate(format: "identifier IN %@", identifiersToFetch)
+                let existingEntries = try context.fetch(fetchRequest)
+                for entry in existingEntries {
+                    guard let identifier = entry.identifier,
+                        let representation = representationsByID[identifier] else { continue }
+                    entry.title = representation.title
+                    entry.bodyText = representation.bodyText
+                    entry.mood = representation.mood
+                    entry.timeStamp = representation.timeStamp
+                    entriesToCreate.removeValue(forKey: identifier)
+                }
+                for representation in entriesToCreate.values {
+                    Entry(entryRepresentaion: representation, context: context)
+                }
+                CoreDataStack.shared.save(context: context)
+            } catch {
+                NSLog("Error fatching entries from persistent store: \(error)")
             }
-            for representation in entriesToCreate.values {
-                Entry(entryRepresentaion: representation, context: context)
+            //Update Firebase with local only entries
+            do {
+                fetchRequest.predicate = NSPredicate(value: true)
+                let allLocalEntries = try context.fetch(fetchRequest)
+                let newLocalEntries = allLocalEntries.filter({!identifiersToFetch.contains($0.identifier!)})
+                print ("New local entries to Firebase: \(newLocalEntries.count)")
+                for entry in newLocalEntries {
+                    put(entry: entry)
+                }
+            } catch {
+                NSLog("Error putting new local entries to Firebase: \(error)")
             }
-            CoreDataStack.shared.saveToPersistentStore()
-        } catch {
-            NSLog("Error fatching entries from persistent store: \(error)")
-        }
-        //Update Firebase with local only entries
-        do {
-            let context = CoreDataStack.shared.mainContext
-            let fetchRequest: NSFetchRequest<Entry> = Entry.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "NOT (identifier IN %0)", identifiersToFetch)
-            let newLocalEntries = try context.fetch(fetchRequest)
-            print ("New local entries to Firebase: \(newLocalEntries.count)")
-            for entry in newLocalEntries {
-                put(entry: entry)
-            }
-        } catch {
-            NSLog("Error putting enteties to Firebase: \(error)")
         }
     }
 }
