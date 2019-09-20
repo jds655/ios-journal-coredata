@@ -14,69 +14,54 @@ protocol EntryDataDelegate {
     func createEntry (with title: String, mood: String, body: String?)
 }
 
-//enum Mood: String {
-//    case sad = "☹️"
-//    case nuetrasl = "😐"
-//    case happy = "🙂"
-//}
-
 class EntryController {
     
     init() {
         fetchEntriesFromServer()
     }
     
-//    var entries: [Entry] {
-//        let fetchRequest: NSFetchRequest<Entry> = Entry.fetchRequest()
-//
-//        do {
-//            let entries = try CoreDataStack.shared.mainContext.fetch(fetchRequest)
-//            return entries
-//        } catch {
-//            NSLog("Error fetching tasks: \(error)")
-//            return []
-//        }
-//    }
-    let baseURL = URL(string: "https://journal-d8910.firebaseio.com/")!
+    func sync(completion: @escaping () -> Void = {}) {
+        fetchEntriesFromServer()
+        completion()
+    }
     
-    @discardableResult func createEntry(with title: String, mood: String, body: String?) -> Entry {
+    @discardableResult func create(with title: String, mood: String, body: String?) -> Entry {
         let entry = Entry(identifier: UUID(), title: title, mood: mood, bodyText: body, context: CoreDataStack.shared.mainContext)
         CoreDataStack.shared.save()
-        put(entry: entry)
+        put(representation: entry.entryRepresentation)
         return entry
     }
     
-    func updateEntry(entry: Entry, with title: String, mood: String, body: String?) {
+    func update(entry: Entry, with title: String, mood: String, body: String?) {
         entry.title = title
         entry.mood = mood
         entry.bodyText = body
         entry.timeStamp = Date()
         CoreDataStack.shared.save()
-        put(entry: entry)
+        put(representation: entry.entryRepresentation)
     }
     
     func delete(entry: Entry) {
         CoreDataStack.shared.mainContext.delete(entry)
         CoreDataStack.shared.save()
+        //Implement delete from Firebase?
     }
     
     //MARK: - Firebase code
     
-    func put(entry: Entry, completion: @escaping (_ error: Error?) -> Void = { _ in }) {
-        let identifier = entry.identifier ?? UUID()
-        entry.identifier = identifier
-        let requestURL = baseURL.appendingPathComponent(identifier.uuidString).appendingPathExtension("json")
+    func put(representation: EntryRepresentation?, completion: @escaping (_ error: Error?) -> Void = { _ in }) {
+        guard let representation = representation else {
+            NSLog("Task Representation is nil for put function.")
+            completion(AppError.objectToRepFailed)
+            return
+            }
+        let requestURL = baseURL.appendingPathComponent(representation.identifier).appendingPathExtension("json")
         var request = URLRequest(url: requestURL)
         request.httpMethod = HTTPMethod.put.rawValue
         do {
-            guard let entryRepresentation = entry.entryRepresentation else {
-                NSLog("Task Representation is nil")
-                completion(nil)
-                return
-            }
             let encoder = JSONEncoder()
             encoder.dateEncodingStrategy = .iso8601
-            request.httpBody = try encoder.encode(entryRepresentation)
+            request.httpBody = try encoder.encode(representation)
             print ("HTTP Body: \(String(describing: request.httpBody))")
         } catch {
             NSLog("Error encoding task respresentation: \(error)")
@@ -98,15 +83,16 @@ class EntryController {
             if let response = response as? HTTPURLResponse {
                 if response.statusCode != 200 {
                     print ("HTTP Response: \(response)")
+                    completion(NetworkError.responseError)
                 }
             }
             if let error = error {
                 NSLog("Error fetching entries: \(error)")
-                completion(error)
+                completion(NetworkError.responseError)
             }
             guard let data = data else {
                 NSLog("No data returned from entries")
-                completion(error)
+                completion(NetworkError.noData)
                 return
             }
             let decoder = JSONDecoder()
@@ -116,7 +102,7 @@ class EntryController {
                 self.updateEntries(with: entryRepresentations)
             } catch {
                 NSLog("Error decoding: \(error)")
-                completion(error)
+                completion(NetworkError.noDecode)
             }
             }.resume()
             completion(nil)
@@ -135,13 +121,23 @@ class EntryController {
                 let existingEntries = try context.fetch(fetchRequest)
                 for entry in existingEntries {
                     guard let identifier = entry.identifier,
-                        let representation = representationsByID[identifier] else { continue }
-                    entry.title = representation.title
-                    entry.bodyText = representation.bodyText
-                    entry.mood = representation.mood
-                    entry.timeStamp = representation.timeStamp
-                    entriesToCreate.removeValue(forKey: identifier)
+                        var representation = representationsByID[identifier] else { continue }
+                    //Update FROM Firebase if it's newer
+                    if let timestamp = entry.timeStamp, timestamp < representation.timeStamp {
+                        entry.title = representation.title
+                        entry.bodyText = representation.bodyText
+                        entry.mood = representation.mood
+                        entry.timeStamp = representation.timeStamp
+                        entriesToCreate.removeValue(forKey: identifier)
+                    } else { //Update TO Firebase with local if newer
+                        representation.title = entry.title!
+                        representation.bodyText = entry.bodyText
+                        representation.mood = entry.mood!
+                        representation.timeStamp = entry.timeStamp!
+                        put (representation: representation)
+                    }
                 }
+                NSLog("Creating \(entriesToCreate.count) entries from Firebase to local store.")
                 for representation in entriesToCreate.values {
                     Entry(entryRepresentaion: representation, context: context)
                 }
@@ -156,7 +152,7 @@ class EntryController {
                 let newLocalEntries = allLocalEntries.filter({!identifiersToFetch.contains($0.identifier!)})
                 print ("New local entries to Firebase: \(newLocalEntries.count)")
                 for entry in newLocalEntries {
-                    put(entry: entry)
+                    put(representation: entry.entryRepresentation)
                 }
             } catch {
                 NSLog("Error putting new local entries to Firebase: \(error)")

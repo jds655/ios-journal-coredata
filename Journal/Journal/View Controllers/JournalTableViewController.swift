@@ -23,6 +23,9 @@ class JournalTableViewController: UITableViewController {
         return frc
     }()
     
+    @IBOutlet weak var syncingView: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem = self.editButtonItem
@@ -32,6 +35,17 @@ class JournalTableViewController: UITableViewController {
         tableView.separatorColor = .white
     }
 
+    @IBAction func syncTapped(_ sender: Any) {
+        self.syncingView.isHidden = false
+        self.activityIndicator.startAnimating()
+        entryController.sync() {
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+                self.syncingView.isHidden = true
+            }
+        }
+    }
+    
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -167,12 +181,12 @@ extension JournalTableViewController: NSFetchedResultsControllerDelegate {
 //MARK: - EntryDataDelegate
 extension JournalTableViewController:EntryDataDelegate {
     func updateEntry(entry: Entry, with title: String, mood: String, body: String?) {
-        entryController.updateEntry(entry: entry, with: title, mood: mood, body: body)
+        entryController.update(entry: entry, with: title, mood: mood, body: body)
         tableView.reloadData()
     }
     
     func createEntry(with title: String, mood: String, body: String?) {
-        entryController.createEntry(with: title, mood: mood, body: body)
+        entryController.create(with: title, mood: mood, body: body)
         tableView.reloadData()
     }
 }

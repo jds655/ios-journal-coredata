@@ -22,9 +22,32 @@
                         <color key="separatorColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="sectionIndexColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableHeaderView" hidden="YES" contentMode="scaleToFill" id="tG9-N9-tug">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="29"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Syncing..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UED-Ha-EId">
+                                    <rect key="frame" x="169" y="4" width="76" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="9Ns-TS-LBE">
+                                    <rect key="frame" x="253" y="4.5" width="20" height="20"/>
+                                    <color key="tintColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </activityIndicatorView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="UED-Ha-EId" firstAttribute="centerX" secondItem="tG9-N9-tug" secondAttribute="centerX" id="O0W-Xs-c8Q"/>
+                                <constraint firstItem="UED-Ha-EId" firstAttribute="centerY" secondItem="tG9-N9-tug" secondAttribute="centerY" id="bvz-dY-MYu"/>
+                                <constraint firstItem="9Ns-TS-LBE" firstAttribute="leading" secondItem="UED-Ha-EId" secondAttribute="trailing" constant="8" id="gZq-op-P94"/>
+                                <constraint firstItem="9Ns-TS-LBE" firstAttribute="centerY" secondItem="UED-Ha-EId" secondAttribute="centerY" id="szZ-uJ-cFY"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="EntryCell" rowHeight="101" id="vSb-gH-e4F" customClass="EntryTableViewCell" customModule="Journal" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="414" height="101"/>
+                                <rect key="frame" x="0.0" y="57" width="414" height="101"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vSb-gH-e4F" id="GqJ-OD-keZ" customClass="EntryTableViewCell" customModule="Journal" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="376" height="100.5"/>
@@ -95,12 +118,25 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Journal" id="iWI-fg-jve">
-                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="x51-SY-dPo">
-                            <connections>
-                                <segue destination="HQg-To-XSb" kind="show" identifier="AddSegue" id="edk-Wj-kMR"/>
-                            </connections>
-                        </barButtonItem>
+                        <leftBarButtonItems>
+                            <barButtonItem systemItem="add" id="x51-SY-dPo">
+                                <color key="tintColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <segue destination="HQg-To-XSb" kind="show" identifier="AddSegue" id="edk-Wj-kMR"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Sync" id="PrC-m7-fPY">
+                                <color key="tintColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="syncTapped:" destination="Ovu-LR-eUD" id="Abw-8q-RaB"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                     </navigationItem>
+                    <connections>
+                        <outlet property="activityIndicator" destination="9Ns-TS-LBE" id="aZy-AD-Yjc"/>
+                        <outlet property="syncingView" destination="tG9-N9-tug" id="jc1-Qr-Fak"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3d9-G1-cmI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

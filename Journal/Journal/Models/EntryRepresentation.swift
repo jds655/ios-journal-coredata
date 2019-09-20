@@ -9,9 +9,9 @@
 import Foundation
 
 struct EntryRepresentation: Codable {
-    let identifier: String
-    let title: String
-    let bodyText: String?
-    let mood: String
-    let timeStamp: Date
+    var identifier: String
+    var title: String
+    var bodyText: String?
+    var mood: String
+    var timeStamp: Date
 }
